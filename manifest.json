@@ -1,0 +1,26 @@
+{
+  "name": "__MSG_appName__",
+  "version": "0.0.1",
+  "manifest_version": 2,
+  "description": "__MSG_appDescription__",
+  "default_locale": "ja",
+  "permissions": [
+    "tabs",
+    "http://*/*",
+    "https://*/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "http://terra.intra.tis.co.jp/*",
+        "https://terra.intra.tis.co.jp/*"
+      ],
+      "js": [
+        "scripts/jquery.min.js",
+        "scripts/terra-schedule-mailer.js"
+      ],
+      "run_at": "document_end",
+      "all_frames": false
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "appName": {
+    "message": "TerraMailer",
+    "description": "The name of the application"
+  },
+  "appDescription": {
+    "message": "スケジュールの参加者全員へのメールを作成するChrome Extension",
+    "description": "The description of the application"
+  }
+}
