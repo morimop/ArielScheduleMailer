@@ -3,21 +3,33 @@
 $(function () {
 
   var mailtoAttendance = function mailtoAttendance() {
-	if(!document.querySelector('.pluralitem')) {return;}
+	if(!document.querySelector('.pluralitem') || !document.querySelector('.schedule-doc-presence-attendee')) {return;}
 	var myName;
 	if(document.getElementById('selectOnlineStatusToolButton')) {
 	  myName = document.querySelector('.aquabar-items span.ico-non').textContent;
 	}
-    var toNames = [].map.call(document.querySelector('.pluralitem').querySelectorAll('.actionmenu-btn'), function (n) {
-      return n.textContent;
-    }).filter(function(n){
-	  return !(n == myName);
+	var toNames = [];
+	var ccNames = [];
+	var roomNames = [];
+	document.querySelectorAll('.selectlistline>.schedule-doc-presence-attendee').forEach(function(n){
+		var rowIdentifer = n.previousElementSibling.textContent;
+		if(n.textContent == myName) {return;}
+		if(rowIdentifer == '承認') {
+			roomNames.push(n.textContent.replace(/\[.*\]/,''));
+		} else if(rowIdentifer == '出席') {
+			toNames.push(n.textContent);
+		} else {
+			ccNames.push(n.textContent);
+		}
 	});
+	var dtContent = document.getElementById('dtstart_view') ? document.getElementById('dtstart_view').textContent : document.getElementById('target_day_view').textContent;
     var titleText = document.getElementById('title').textContent;
     var scheduleUrlGuide = document.querySelector('.docfooter-uri').textContent;
     if (titleText && scheduleUrlGuide) {
 		var mailtoHref = 'mailto:'+encodeURIComponent(toNames.join('; '))
-			+'?subject='+encodeURIComponent(titleText)
+			+'?subject='+encodeURIComponent(titleText + '['+dtContent.trim().split('年')[1]+']')
+			+((roomNames.length>0)?'＠':'')+encodeURIComponent(roomNames.join(', '))
+			+'&cc='+encodeURIComponent(ccNames.join('; '))
 			+'&body='+encodeURIComponent(scheduleUrlGuide);
 		var linkNode = document.createElement('a');
 		linkNode.href=mailtoHref;
