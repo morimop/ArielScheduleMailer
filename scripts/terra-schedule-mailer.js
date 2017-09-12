@@ -3,17 +3,27 @@
 $(function () {
 
   var mailtoAttendance = function mailtoAttendance() {
+	if(!document.querySelector('.pluralitem')) {return;}
+	var myName;
+	if(document.getElementById('selectOnlineStatusToolButton')) {
+	  myName = document.querySelector('.aquabar-items span.ico-non').textContent;
+	}
     var toNames = [].map.call(document.querySelector('.pluralitem').querySelectorAll('.actionmenu-btn'), function (n) {
       return n.textContent;
-    });
+    }).filter(function(n){
+	  return !(n == myName);
+	});
     var titleText = document.getElementById('title').textContent;
     var scheduleUrlGuide = document.querySelector('.docfooter-uri').textContent;
     if (titleText && scheduleUrlGuide) {
-      var closeWindow = window.open('mailto:' + encodeURIComponent(toNames.join('; ')) + '?subject=' + encodeURIComponent(titleText) + '&body=' + encodeURIComponent(scheduleUrlGuide));
-	  closeWindow.document.title='新規メールが表示されたら閉じてOK！';
-	  setTimeout(()=>{
-		closeWindow.document.location='javascript:window.close()';
-		}, 1000);
+		var mailtoHref = 'mailto:'+encodeURIComponent(toNames.join('; '))
+			+'?subject='+encodeURIComponent(titleText)
+			+'&body='+encodeURIComponent(scheduleUrlGuide);
+		var linkNode = document.createElement('a');
+		linkNode.href=mailtoHref;
+		linkNode.textContent='send email to all';
+		document.querySelector('.buttons-wrap').appendChild(linkNode).click();
+		linkNode.remove();
     }
   };
 
