@@ -29,14 +29,17 @@ $(function () {
 		var mailtoHref = 'mailto:'+encodeURIComponent(toNames.join('; '))
 			+'?subject='+encodeURIComponent(titleText + '['+dtContent.trim().split('年')[1]+']')
 			+((roomNames.length>0)?'＠':'')+encodeURIComponent(roomNames.join(', '))
-			+'&cc='+encodeURIComponent(ccNames.join('; '))
 			+'&body='+encodeURIComponent(scheduleUrlGuide);
+		if(ccNames.length > 0) {
+			mailtoHref = mailtoHref+'&cc='+encodeURIComponent(ccNames.join('; '));
+		}
 		var linkNode = document.createElement('a');
 		linkNode.href=mailtoHref;
 		linkNode.textContent='send email to all';
 		document.querySelector('.buttons-wrap').appendChild(linkNode).click();
 		linkNode.remove();
     }
+	return false;
   };
 
   var prependTriggerButton = function prependTriggerButton($base) {
