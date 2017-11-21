@@ -17,9 +17,9 @@ $(function () {
 		if(rowIdentifer == '承認') {
 			roomNames.push(n.textContent.replace(/\[.*\]/,''));
 		} else if(rowIdentifer == '出席') {
-			toNames.push(n.textContent);
+			toNames.push(n.textContent.replace(/ /,'　'));
 		} else {
-			ccNames.push(n.textContent);
+			ccNames.push(n.textContent.replace(/ /,'　'));
 		}
 	});
 	var dtContent = document.getElementById('dtstart_view') ? document.getElementById('dtstart_view').textContent : document.getElementById('target_day_view').textContent;
