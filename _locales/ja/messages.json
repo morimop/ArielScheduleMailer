@@ -4,7 +4,7 @@
     "description": "The name of the application"
   },
   "appDescription": {
-    "message": "スケジュールの参加者全員へのメールを作成するChrome Extension",
+    "message": "スケジュールの参加者全員へのメールを作成するChrome Extension. 貼付用iCalファイルのダウンロードも可能。",
     "description": "The description of the application"
   }
 }
