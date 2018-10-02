@@ -1,6 +1,6 @@
 'use strict';
 
-$(function () {
+(function () {
 
   var mailtoAttendance = function() {
 	if(!document.querySelector('.pluralitem') || !document.querySelector('.schedule-doc-presence-attendee')) {return;}
@@ -144,34 +144,41 @@ $(function () {
   };
 
   var prependTriggerButton = function prependTriggerButton($base) {
+    if (!$base.querySelector('.docfooter-app-uri a')) return;
 
-    if ($base.find('.docfooter-app-uri a').text() == 'スケジュール' && $('#__mailto_attendance_icon').length == 0) {
-      var trigger = $('<a>').addClass('noborder-button').attr({ id: '__mailto_attendance_icon', href: 'javascript:void(0)', title: '出席者全員にメール' });
-      trigger.click(function () {
+    if ($base.querySelector('.docfooter-app-uri a').text == 'スケジュール'
+     && document.querySelectorAll('#__mailto_attendance_icon').length == 0) {
+      var trigger = document.createElement('a');
+      trigger.classList.add('noborder-button');
+      trigger.setAttribute('id','__mailto_attendance_icon');
+      trigger.setAttribute('href','javascript:void(0)');
+      trigger.setAttribute('title','出席者全員にメール');
+      trigger.addEventListener('click', function () {
         return mailtoAttendance();
       });
-      var icon =
-        $('<span>')
-        .addClass('icon')
-        .addClass('ico-create')
-        .addClass('__mailto_attendance_icon')
-        .text('出席者全員にメール');
-      trigger.prepend(icon);
-      $base.find('.buttons-wrap').append(trigger);
+      var icon = document.createElement('span');
+      icon.classList.add('icon');
+      icon.classList.add('ico-create');
+      icon.classList.add('__mailto_attendance_icon');
+      icon.textContent = '出席者全員にメール';
+      trigger.insertBefore(icon, trigger.firstChild);
+      $base.querySelector('.buttons-wrap').appendChild(trigger);
 
-      var triggerExport = $('<a>')
-        .addClass('noborder-button')
-        .attr({ id: '__ical_export_icon', href: 'javascript:void(0)', title: 'iCalエクスポート' });
-      triggerExport.click(function () {
+      var triggerExport = document.createElement('a');
+      triggerExport.classList.add('noborder-button');
+      triggerExport.setAttribute('id', '__ical_export_icon');
+      triggerExport.setAttribute('href', 'javascript:void(0)');
+      triggerExport.setAttribute('title', 'iCalエクスポート');
+      triggerExport.addEventListener('click',function () {
         return downloadIcoFile();
       });
-      var scheduleIcon = $('<span>')
-        .addClass('icon')
-        .addClass('ico-schedule')
-        .addClass('__ical_export_icon')
-        .text('iCalエクスポート');
-      triggerExport.prepend(scheduleIcon);
-      $base.find('.buttons-wrap').append(triggerExport);
+      var scheduleIcon = document.createElement('span');
+      scheduleIcon.classList.add('icon');
+      scheduleIcon.classList.add('ico-schedule');
+      scheduleIcon.classList.add('__ical_export_icon');
+      scheduleIcon.textContent = 'iCalエクスポート';
+      triggerExport.insertBefore(scheduleIcon, triggerExport.firstChild);
+      $base.querySelector('.buttons-wrap').appendChild(triggerExport);
     }
   };
 
@@ -180,7 +187,7 @@ $(function () {
   // を回避するために MutationObserver を使ってタイミングをずらす
   var wrapperQuery = '#wrapper';
   new MutationObserver(function () {
-    prependTriggerButton($(wrapperQuery));
+    prependTriggerButton(document.querySelector(wrapperQuery));
   }).observe(document.querySelector(wrapperQuery), { childList: true, subtree: true });
 
   // スケジュールポップアップ
@@ -192,9 +199,9 @@ $(function () {
         // レポート機能と出欠登録機能が使えなくなる(タイミングの問題？詳しい原因不明)
         // を回避するために setTimeout を使ってタイミングをずらす
         setTimeout(function () {
-          return prependTriggerButton($(modalQuery));
+          return prependTriggerButton(document.querySelector(modalQuery));
         }, 0);
       }).observe(modal, { childList: true });
     }
   }).observe(document.querySelector('#popup_field'), { childList: true });
-});
+})();
